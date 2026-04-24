@@ -36,6 +36,7 @@ private:
 
     ::etl::optional<uint32_t> _ticksPerUs;
     uint32_t _totalRuntime;
+    uint32_t _startTime;
 };
 
 } // namespace lifecycle
