@@ -75,10 +75,20 @@ void printStack(
     }
 }
 
+void printUpTime(
+    ::util::command::CommandContext& context,
+    uint32_t const startTime)
+{
+    ::util::format::SharedStringWriter writer(context);
+    uint32_t const upTime = getSystemTimeMs32Bit() - startTime;
+    writer.printf("up time: %u ms\n", upTime);
+}
+
 enum Id
 {
     ID_CPU,
     ID_STACK,
+    ID_UPTIME,
     ID_ALL
 };
 
@@ -90,6 +100,7 @@ DEFINE_COMMAND_GROUP_GET_INFO_BEGIN(StatisticsCommand, "stats", "lifecycle stati
 COMMAND_GROUP_COMMAND(ID_CPU, "cpu", "prints CPU statistics")
 COMMAND_GROUP_COMMAND(ID_STACK, "stack", "prints stack statistics")
 COMMAND_GROUP_COMMAND(ID_ALL, "all", "prints all statistics")
+COMMAND_GROUP_COMMAND(ID_UPTIME, "uptime", "prints up time")
 DEFINE_COMMAND_GROUP_GET_INFO_END
 
 StatisticsCommand::StatisticsCommand(::async::AsyncBinding::RuntimeMonitorType& runtimeMonitor)
@@ -98,6 +109,7 @@ StatisticsCommand::StatisticsCommand(::async::AsyncBinding::RuntimeMonitorType& 
 , _isrGroupStatistics()
 , _ticksPerUs()
 , _totalRuntime(0)
+, _startTime(getSystemTimeMs32Bit())
 {}
 
 void StatisticsCommand::setTicksPerUs(uint32_t const ticksPerUs) { _ticksPerUs = ticksPerUs; }
@@ -124,10 +136,16 @@ void StatisticsCommand::executeCommand(::util::command::CommandContext& context,
             printStack(context, _runtimeMonitor);
             break;
         }
+        case ID_UPTIME:
+        {
+            printUpTime(context, _startTime);
+            break;
+        }
         case ID_ALL:
         {
             printCpu(context, _taskStatistics, _isrGroupStatistics, _ticksPerUs, _totalRuntime);
             printStack(context, _runtimeMonitor);
+            printUpTime(context, _startTime);
             break;
         }
         default:
