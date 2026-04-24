@@ -1,4 +1,4 @@
-// Copyright 2024 Accenture.
+// Copyright 2024 Accenture.asd
 
 #include "lifecycle/console/StatisticsCommand.h"
 
