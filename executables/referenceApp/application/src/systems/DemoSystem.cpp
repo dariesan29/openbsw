@@ -8,6 +8,7 @@
 #include <outputPwm/OutputPwm.h>
 #endif
 #include "app/CanDemoListener.h"
+#include "app/CanRpmListener.h"
 #include "app/DemoLogger.h"
 
 #include <bsp/SystemTime.h>
@@ -62,6 +63,7 @@ DemoSystem::DemoSystem(
 #ifdef PLATFORM_SUPPORT_CAN
 , _canSystem(canSystem)
 , _canDemoListener(canSystem.getCanTransceiver(::busid::CAN_0))
+, _canRpmListener(canSystem.getCanTransceiver(::busid::CAN_0))
 , _canCommand(_canSystem)
 , _asyncCommandWrapperForCanCommand(_canCommand, _context)
 #endif
@@ -97,6 +99,7 @@ void DemoSystem::run()
 {
 #ifdef PLATFORM_SUPPORT_CAN
     _canDemoListener.run();
+    _canRpmListener.run();
 #endif
 #ifdef PLATFORM_SUPPORT_ETHERNET
     _echoServer.start();
@@ -114,6 +117,7 @@ void DemoSystem::shutdown()
 {
 #ifdef PLATFORM_SUPPORT_CAN
     _canDemoListener.shutdown();
+    _canRpmListener.shutdown();
 #endif
 #ifdef PLATFORM_SUPPORT_ETHERNET
     _echoServer.stop();

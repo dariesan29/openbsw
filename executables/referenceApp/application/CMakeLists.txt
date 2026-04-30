@@ -32,6 +32,13 @@ if (PLATFORM_SUPPORT_CAN)
     endif ()
 endif ()
 
+if (PLATFORM_SUPPORT_CAN)
+    target_sources(app.referenceApp PRIVATE src/app/CanRpmListener.cpp)
+    if (PLATFORM_SUPPORT_TRANSPORT)
+        target_sources(app.referenceApp PRIVATE src/systems/DoCanSystem.cpp)
+    endif ()
+endif ()
+
 if (PLATFORM_SUPPORT_STORAGE)
     target_sources(app.referenceApp PRIVATE src/systems/StorageSystem.cpp)
 endif ()

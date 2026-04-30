@@ -10,6 +10,7 @@
 #include <lifecycle/ILifecycleManager.h>
 #ifdef PLATFORM_SUPPORT_CAN
 #include "app/CanDemoListener.h"
+#include "app/CanRpmListener.h"
 
 #include <can/console/CanCommand.h>
 #include <console/AsyncCommandWrapper.h>
@@ -73,6 +74,7 @@ private:
 #ifdef PLATFORM_SUPPORT_CAN
     ::can::ICanSystem& _canSystem;
     ::can::CanDemoListener _canDemoListener;
+    ::can::CanRpmListener _canRpmListener;
     ::can::CanCommand _canCommand;
     ::console::AsyncCommandWrapper _asyncCommandWrapperForCanCommand;
 #endif
