@@ -31,7 +31,7 @@ void CanRpmListener::shutdown()
 {
     if (_canTransceiver != nullptr)
     {
-        _canTransceiver->removeCANFrameListener(*this);asd
+        _canTransceiver->removeCANFrameListener(*this);
     }
 }
 } // namespace can
