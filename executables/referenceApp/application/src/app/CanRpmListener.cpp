@@ -10,7 +10,15 @@ CanRpmListener::CanRpmListener(::can::ICanTransceiver* canTransceiver)
 {}
 ::can::IFilter& CanRpmListener::getFilter() { return _canFilter; }
 void CanRpmListener::frameReceived(::can::CANFrame const& frame)
-{
+{   
+    if(frame.getpayloadLength() != 2)
+    {
+        Logger::warn(
+            CAN,
+            "[CanRpmListener] Received frame is different than 2 bytes");
+        return;
+    }
+
     uint8_t const* payload = frame.getPayload();
     uint16_t const rpm     = (static_cast<uint16_t>(payload[0]) << 8U) | payload[1];
     Logger::debug(
